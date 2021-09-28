@@ -1,0 +1,10 @@
+-i https://pypi.theorchard.io/pypi/
+flask-sqlalchemy==2.5.1
+ddtrace==0.48.0
+Flask==1.1.2
+owsresponse==3.0.4
+flasgger==0.9.5
+owslogger==1.2.1
+owsrequest==0.33.3
+python-dotenv==0.17.0
+sentry-sdk[flask]==1.0.0

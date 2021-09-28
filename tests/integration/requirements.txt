@@ -1,0 +1,6 @@
+-i https://pypi.theorchard.io/pypi/
+
+qa-utils-grass
+pytest
+python-dotenv==0.8.2
+requests

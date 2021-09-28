@@ -1,0 +1,40 @@
+---
+swagger: "2.0"
+
+info:
+  version: 1.0.0
+  title: API Specifications
+
+schemes:
+  - https
+host: qa-ows-REST-Api.theorchard.io
+paths:
+  /:
+    get:
+      summary: Hello World path.
+      responses:
+        200:
+          description: 200 OK
+          examples:
+            text/html: "Hello Bill!"
+  /{username}:
+    get:
+      summary: Hello World with an optional GET param "username".
+      parameters:
+        - in: path
+          name: username
+          required: true
+          type: string
+      responses:
+        200:
+          description: 200 OK
+          examples:
+            text/html: "Hello Bill!"
+  /hello/:
+    get:
+      summary: Check the health of the application.
+      responses:
+        200:
+          description: 200 OK
+          examples:
+            application/json: {"status": "ok"}
