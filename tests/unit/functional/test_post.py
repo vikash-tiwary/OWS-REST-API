@@ -11,11 +11,10 @@ headers = {
 def get_data():
     required_data={
         "id": 1,
-        "title": "title-t",
-        "description": "description-t"
+        "title": "title",
+        "description": "description"
     }
     return required_data
-
 
 @pytest.fixture
 def post_data():
@@ -24,17 +23,22 @@ def post_data():
         "description":'description'
     }
     return data
-    
 
+@pytest.fixture
+def update_data():
+    data={
+        "title":'title',
+        "description":'description'
+    }
+    return data
+    
 def test_create_post(post_data):
     """
     Test function to create post details
     """
     
-    response = requests.post("http://192.168.0.103:5000/post",json=json.dumps(post_data),headers=headers)
+    response = requests.post("http://192.168.0.103:5000/post",data=json.dumps(post_data),headers=headers)
     assert 200==response.status_code
-
-
 
 def test_get_all_post():
     """
@@ -54,16 +58,12 @@ def test_get_post(get_data):
     assert get_data== json_data
     assert 200==response.status_code
 
-def test_update_post():
+def test_update_post(update_data):
     """
     Test case to update pust details
     """
-    data={ 
-        "title":"title2",
-        "description":"description2"
-    }
 
-    response=requests.put("http://192.168.0.103:5000/post/1",json=json.dumps(data),headers=headers)
+    response=requests.put("http://192.168.0.103:5000/post/1",data=json.dumps(update_data),headers=headers)
 
     assert 200==response.status_code
 
