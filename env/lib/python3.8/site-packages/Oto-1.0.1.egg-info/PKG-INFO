@@ -1,0 +1,13 @@
+Metadata-Version: 1.1
+Name: Oto
+Version: 1.0.1
+Summary: Standardize communication between the different layers of an application.
+Home-page: https://github.com/xethorn/oto
+Author: Michael Ortali
+Author-email: github@xethorn.net
+License: MIT
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5

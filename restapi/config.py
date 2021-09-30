@@ -20,7 +20,7 @@ SERVICE_VERSION = "1.0.0"
 PROD_ENVIRONMENT = "prod"
 DEV_ENVIRONMENT = "dev"
 QA_ENVIRONMENT = "qa"
-TEST_ENVIRONMENT = "test"
+TEST_ENVIRONMENT = "test-1"
 ENVIRONMENT = os.environ.get("Environment") or DEV_ENVIRONMENT
 
 secrets_manager_client = FlaskSecretsManager(
@@ -30,6 +30,8 @@ secrets_manager_client = FlaskSecretsManager(
 # Database config
 if ENVIRONMENT == TEST_ENVIRONMENT:
     DB_URL = 'sqlite://'
+    POOL_CLASS = StaticPool
+    CONNECT_ARGS = {'check_same_thread': False}
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {}
 else:

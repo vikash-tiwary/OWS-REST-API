@@ -3,7 +3,7 @@
 from unittest.mock import patch
 
 import pytest
-from api import (  # noqa (handlers are imported for test client)
+from restapi import (  # noqa (handlers are imported for test client)
     api,
     handlers,
 )

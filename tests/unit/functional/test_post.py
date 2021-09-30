@@ -1,20 +1,16 @@
 import json
 import requests
 import pytest
-
-
-headers = {
-    'Content-Type': "application/json"
-}
+from restapi import config
 
 @pytest.fixture
-def get_data():
-    required_data={
-        "id": 1,
-        "title": "title",
-        "description": "description"
+def expected_header_data():
+    headers = {
+        'Content-Type': "application/json"
     }
-    return required_data
+
+    return headers
+
 
 @pytest.fixture
 def post_data():
@@ -32,45 +28,42 @@ def update_data():
     }
     return data
     
-def test_create_post(post_data):
+def test_create_post(client,post_data,expected_header_data):
     """
     Test function to create post details
     """
     
-    response = requests.post("http://192.168.0.103:5000/post",data=json.dumps(post_data),headers=headers)
+    response = client.post("/post",data=json.dumps(post_data),headers=expected_header_data)
     assert 200==response.status_code
 
-def test_get_all_post():
+def test_get_all_post(client):
     """
     Test function to get all post from post
     """
-    response = requests.get("http://192.168.0.103:5000/post")
-    json_data = json.loads(response.text)
-    print(json_data)
+    response = client.get("/post")
     assert 200==response.status_code
 
-def test_get_post(get_data):
+def test_get_post(client):
     """
     Test function to get post of one id from  post
     """
-    response = requests.get("http://192.168.0.103:5000/post/1")
-    json_data = json.loads(response.text)
-    assert get_data== json_data
+    response = client.get("/post/1")
+    
     assert 200==response.status_code
 
-def test_update_post(update_data):
+def test_update_post(client,update_data,expected_header_data):
     """
     Test case to update pust details
     """
 
-    response=requests.put("http://192.168.0.103:5000/post/1",data=json.dumps(update_data),headers=headers)
+    response=client.put("/post/1",data=json.dumps(update_data),headers=expected_header_data)
 
     assert 200==response.status_code
 
-def test_delete_post():
+def test_delete_post(client):
     """
     Test case to delete post
     """
-    response=requests.delete("http://192.168.0.103:5000/post/17")
+    response=client.delete("/post/17")
 
     assert 200==response.status_code

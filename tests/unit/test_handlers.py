@@ -4,7 +4,7 @@ import json
 from unittest.mock import MagicMock, patch
 
 from owsresponse import response
-from api import handlers
+from restapi.api import handlers
 
 
 @patch("api.handlers.g", spec=['log'])
@@ -25,3 +25,4 @@ def test_exception_handler(mock_g):
     response_message = json.loads(server_response.data.decode())
     assert response_message["message"] == message
     assert response_message["code"] == response.error.ERROR_CODE_INTERNAL_ERROR
+

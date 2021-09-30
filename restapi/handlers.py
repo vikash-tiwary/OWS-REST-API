@@ -61,6 +61,9 @@ from restapi.logic import ows_post
 #     g.log.exception(error)
 #     return flaskify(response.create_fatal_response(message))
 
+
+# import pdb;pdb.set_trace()
+
 @app.route('/post/<int:id>',methods=['GET'])
 def get_post(id):
     """Fetch all of the possible meta language options."""
