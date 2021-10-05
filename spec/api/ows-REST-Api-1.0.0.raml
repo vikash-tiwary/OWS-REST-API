@@ -1,0 +1,266 @@
+#%RAML 0.8
+title: Digital Products API
+version: 0.0.1
+baseUri: https://ows-REST-Api.theorchard.io
+documentation:
+- title: Description
+  content: |
+    Specitifcation for the REST API microservice.
+- title: Resources
+  content: |
+    Github Repository: https://github.com/vikash-tiwary/ows-REST-Api
+    Tech Design: https://docs.google.com/document/d/1OfM9zrm7mEDrGd80QTYR-pov-lanw4QpmbA2Bz5YtyQ/edit?ts=57a0069c#
+
+/post:
+  get:
+    description: Fetches a list of available languages that can be used for the product "meta_language" (metadata language) property
+    headers:
+      Correlation-Id:
+        description: UUID
+        type: string
+        required: false
+      Content-Type:
+        type: string
+        required: true
+        pattern: application/json
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "id":1,
+                "title": "title",
+                "description": "description"
+              }
+      400:
+        description: |
+          HTTP 400 Bad Request
+          --------------------
+          Missing Correlation-Id, missing or invalid Content-Type, invalid page_offset, or invalid page_limit
+
+  post:
+    description: Create a new product.
+    headers:
+      Correlation-Id:
+        description: UUID
+        type: string
+        required: false
+      Grass-Account-Type:
+        description: vendor | subaccount
+        type: string
+        example: "vendor"
+        required: false
+        enum: [ vendor, subaccount ]
+      Grass-Account-Id:
+        description: vendor_id | subaccount_id
+        type: string
+        pattern: ^\d+$
+        required: false
+      Content-Type:
+        type: string
+        required: true
+        pattern: application/json
+    body:
+      application/json:
+        schema: |
+          {
+            "$schema": "http://json-schema.org/draft-03/schema",
+            "properties": {
+              "id": {
+                "required": false,
+                "type": "integer",
+                "description": "Unique id of the post for microservice calls."
+              },
+              "title": {
+                "required": false,
+                "type": "string",
+                "description": "title of post"
+              },
+              "description": {
+                "required": false,
+                "type": ["string", "null"],
+                "blank": true,
+                "maxLength": 255,
+                "description": "description of the post"
+              }
+            }
+          }
+    responses:
+      201:
+        body:
+          application/json:
+            example: |
+              {
+                "id":1,
+                "title":"title",
+                "description": "description"
+              }
+      400:
+        description: |
+          HTTP 400 Bad Request
+          ---------------------
+          Missing Grass-Account-Type OR Grass-Account-Id.  Both values may be omitted (in the case of a request from another ows microservice), but if one is present, the other must also be present.
+      403:
+        description: |
+          HTTP 403 Forbidden
+          ------------------
+          The request includes a project_id where the owner of the project does not match the value given in the Grass headers.
+
+
+/post/<int:id>:
+  get:
+    description: Fetches a list of available languages that can be used for the product "meta_language" (metadata language) property. Does not require a Grass session token in query string.
+    headers:
+      Correlation-Id:
+        description: UUID
+        type: string
+        required: false
+      Content-Type:
+        type: string
+        required: true
+        pattern: application/json
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "id":1,
+                "title":"title",
+                "description": "description"
+              }
+      400:
+        description: |
+          HTTP 400 Bad Request
+          --------------------
+          Missing Correlation-Id, missing or invalid Content-Type, invalid page_offset, or invalid page_limit
+
+  put:
+    description: Update an existing product.
+    headers:
+      Correlation-Id:
+        description: UUID
+        type: string
+        required: false
+      Grass-Account-Type:
+        description: vendor | subaccount
+        type: string
+        example: "vendor"
+        required: false
+        enum: [ vendor, subaccount ]
+      Grass-Account-Id:
+        description: vendor_id | subaccount_id
+        type: string
+        pattern: ^\d+$
+        required: false
+      Content-Type:
+        type: string
+        required: true
+        pattern: application/json
+    body:
+      application/json:
+        schema: |
+          {
+            "$schema": "http://json-schema.org/draft-03/schema",
+            "properties": {
+              "id": {
+                "required": false,
+                "type": "integer",
+                "description": "Unique id of the post for microservice calls."
+              },
+              "title": {
+                "required": false,
+                "type": "string",
+                "description": "title of post"
+              },
+              "description": {
+                "required": false,
+                "type": ["string", "null"],
+                "blank": true,
+                "maxLength": 255,
+                "description": "description of the post"
+              }
+            }
+          }
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "id":1,
+                "title":"title",
+                "description": "description"
+              }
+      400:
+        description: |
+          HTTP 400 Bad Request
+          ---------------------
+          Missing Grass-Account-Type OR Grass-Account-Id.  Both values may be omitted (in the case of a request from another ows microservice), but if one is present, the other must also be present.
+      403:
+        description: |
+          HTTP 403 Forbidden
+          ------------------
+          The request includes a project_id where the owner of the project does not match the value given in the Grass headers.
+
+  delete:
+    description: Delete a release correction
+    headers:
+      Content-Type:
+        type: string
+        required: true
+        pattern: application/json
+      Orchard-User-Id:
+         description: Orchard user ID from Grass
+         pattern: ^(oa:|alw:)
+         type: string
+         required: false
+      Correlation-Id:
+        description: UUID
+        type: string
+        required: false
+      Grass-Account-Id:
+        description: Vendor /subaccount ID from Grass
+        type: string
+        required: false
+      Grass-Account-Type:
+        description: Type of account (vendor or subaccount) for the Grass-authenticated user
+        type: string
+        required: false
+    responses:
+      202:
+        description: The release correction was successfully deleted.
+        body:
+          applicaton/json:
+            example: |
+              {
+                'message': 'release correction successfully deleted'
+              }
+      400:
+        description: The release correction status is not "active"
+        body:
+          application/json:
+            example: |
+              {
+                "code": "bad_request",
+                "message": "Can't delete a release correction with a submitted status"
+              }
+      404:
+        description: The release correction was not found.
+        body:
+          application/json:
+            example: |
+              {
+                "code": "not_found_error",
+                "message": "No release correction record found"
+              }
+      500:
+        description: A database error occured.
+        body:
+          application/json:
+            example: |
+              {
+                "code": "internal_error",
+                "message": "db error"
+              }

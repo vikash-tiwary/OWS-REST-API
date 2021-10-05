@@ -6,6 +6,7 @@ from os.path import abspath, dirname, join, pardir
 from secrets_manager.flask_ext import FlaskSecretsManager
 from sqlalchemy.pool import QueuePool
 from sqlalchemy.pool import StaticPool
+from pyraml import parser as raml_parser
 from dotenv import load_dotenv
 
 # Load environment variables from a .env file if present
@@ -58,6 +59,12 @@ else:
         'max_overflow': POOL_MAX_OVERFLOW
     }
 
+path = os.path.dirname(os.path.dirname(__file__))
+# API definition
+API_DEFINITION = raml_parser.load(
+    os.path.join(
+        path, 'spec/api/ows-REST-Api-{version}.raml'.format(
+            version=SERVICE_VERSION)))
 # Errors and loggers
 SENTRY = os.environ.get("SENTRY_DSN") or None
 LOGGER_DSN = os.environ.get("LOGGER_DSN") or None

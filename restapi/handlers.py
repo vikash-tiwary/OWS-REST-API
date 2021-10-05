@@ -20,6 +20,7 @@ from restapi import config
 from restapi.api import app
 from restapi.logic import hello
 from restapi.logic import ows_post
+from restapi.validation import json_schema
 
 # @app.route("/", methods=["GET"])
 # def hello_world():
@@ -65,20 +66,24 @@ from restapi.logic import ows_post
 # import pdb;pdb.set_trace()
 
 @app.route('/post/<int:id>',methods=['GET'])
+@json_schema.validate_request_headers
 def get_post(id):
     """Fetch all of the possible meta language options."""
-    headers = {'Cache-Control': 'max-age=86400'}
-    
+    headers = {'Cache-Control': 'max-age=86400','Content-Type':'application/json'}
+
     return flaskify(ows_post.get_post(id), headers)
 
 @app.route('/post',methods=['GET'])
+@json_schema.validate_request_headers
 def get_all_post():
     """Fetch all of the possible meta language options."""
-    headers = {'Cache-Control': 'max-age=86400'}
+    headers = {'Cache-Control': 'max-age=86400','Content-Type':'application/json'}
     
     return flaskify(ows_post.get_post(), headers)
 
 @app.route('/post',methods=['POST'])
+@json_schema.validate_request_headers
+@json_schema.validate_request_body
 def create_post():
     """Create a new post.
 
@@ -86,34 +91,35 @@ def create_post():
         flask.Response: on successful creation of the prouct, returns a 201
             with a JSON representation of the created post.
     """
-    # headers_response = flask_request.verify_grass_headers(request)
-    # if not headers_response:
-    #     return flaskify(headers_response)
+    headers = {'Content-Type':'application/json'}
 
     post_data = request.get_json()
-    return flaskify(ows_post.create_post(post_data))
+    return flaskify(ows_post.create_post(post_data),headers)
 
 @app.route('/post/<int:id>',methods=['PUT'])
+@json_schema.validate_request_headers
+@json_schema.validate_request_body
 def update_post(id):
     """Update an existing post details.
 
     Returns:
         flask.Response: on successful, 200 status with JSON body.
     """
-
+    headers = {'Content-Type':'application/json'}
     post_data = request.get_json()
-    return flaskify(ows_post.update_post(post_data,id))
+    return flaskify(ows_post.update_post(post_data,id),headers)
 
 
 @app.route('/post/<int:id>',methods=['DELETE'])
+@json_schema.validate_request_headers
 def delete_post(id):
     """Delete an existing post details.
 
     Returns:
         flask.Response: on successful, 200 status with JSON body.
     """
-
-    return flaskify(ows_post.delete_post(id))
+    headers = {'Content-Type':'application/json'}
+    return flaskify(ows_post.delete_post(id),headers)
 
 
 
