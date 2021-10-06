@@ -135,6 +135,7 @@ def validate_request_body(func):
         callable: decorated function.
     """
     def _check_request_body():
+        print(request.get_json())
         return validate(
             request.get_json(), json_validators.body_validator())
     return _wrap_request_validation(_check_request_body)(func)

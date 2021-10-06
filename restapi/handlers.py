@@ -71,7 +71,7 @@ def get_post(id):
     """Fetch all of the possible meta language options."""
     headers = {'Cache-Control': 'max-age=86400','Content-Type':'application/json'}
 
-    return flaskify(ows_post.get_post(id), headers)
+    return flaskify(ows_post.get_post(id),headers=headers)
 
 @app.route('/post',methods=['GET'])
 @json_schema.validate_request_headers

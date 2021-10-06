@@ -21,7 +21,7 @@ SERVICE_VERSION = "1.0.0"
 PROD_ENVIRONMENT = "prod"
 DEV_ENVIRONMENT = "dev"
 QA_ENVIRONMENT = "qa"
-TEST_ENVIRONMENT = "test-1"
+TEST_ENVIRONMENT = "test"
 ENVIRONMENT = os.environ.get("Environment") or DEV_ENVIRONMENT
 
 secrets_manager_client = FlaskSecretsManager(
